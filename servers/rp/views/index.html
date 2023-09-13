@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>FedCM RP Demo</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏬</text></svg>"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <meta name="nonce" content="{{nonce}}" />
+  </head>
+  <body>
+    <header>
+      <h1>RP Demo</h1>
+    </header>
+    <main>
+      <h1>Welcome</h1>
+      <dl>
+        <dt>name:</dt>
+        <dd class="name"></dd>
+        <dt>email:</dt>
+        <dd class="email"></dd>
+        <dt>picture:</dt>
+        <dd class="picture"></dd>
+      </dl>
+    </main>
+    <footer></footer>
+  </body>
+  <script type="module">
+    const $ = document.querySelector.bind(document)
+    const IDP = "https://idp.example"
+    const nonce = $("meta[name=nonce]").content
+
+    const { provider_urls } = await (await fetch(`${IDP}/.well-known/web-identity`)).json()
+
+    const credential = await navigator.credentials.get({
+      identity: {
+        providers: [
+          {
+            configURL: provider_urls,
+            clientId: "https://rp.example",
+            nonce
+          }
+        ]
+      },
+      mediation: "optional"
+    })
+    const { token } = credential
+    console.log({ token })
+
+    const user = await (
+      await fetch("/verify", {
+        method: "post",
+        headers: {
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({ token })
+      })
+    ).json()
+    console.log(user)
+
+    $(".name").textContent = user.name
+    $(".email").textContent = user.email
+
+    const $img = document.createElement("img")
+    $img.width = 256
+    $img.height = 256
+    $img.src = user.picture
+    $(".picture").appendChild($img)
+  </script>
+</html>

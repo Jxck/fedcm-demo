@@ -1,0 +1,16 @@
+sptth:
+  hosts:
+    idp.example:
+      key: ./cert/idp.example-key.pem
+      cert: ./cert/idp.example.pem
+      url: http://127.0.0.1:5000
+    rp.example:
+      key: ./cert/rp.example-key.pem
+      cert: ./cert/rp.example.pem
+      url: http://127.0.0.1:6000
+  config:
+    port: 80
+    ssl:
+      port: 443
+    bunyan:
+      level: "warn"
