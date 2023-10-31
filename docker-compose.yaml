@@ -35,10 +35,10 @@ services:
     volumes:
       # using env variables in nginx config
       - type: bind
-        source: "./nginx/nginx.conf"
+        source: "./proxy/nginx.conf"
         target: "/etc/nginx/templates/default.conf.template"
       - type: bind
-        source: "./nginx/cert"
+        source: "./proxy/cert"
         target: "/cert"
     networks:
       - sesame_network
