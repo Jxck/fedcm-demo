@@ -1,0 +1,56 @@
+version: "3.8"
+
+volumes:
+  idp_node_modules:
+  rp_node_modules:
+
+services:
+  idp:
+    image: gcr.io/project-sesame/idp:latest
+    build: ./services/idp
+    container_name: "sesame_idp"
+    env_file:
+      - .env
+    volumes:
+      - ./services/rp:/workspace
+      - idp_node_modules:/workspace/node_modules
+    networks:
+      - sesame_network
+
+  rp:
+    image: gcr.io/project-sesame/rp:latest
+    build: ./services/rp
+    container_name: "sesame_rp"
+    env_file:
+      - .env
+    volumes:
+      - ./services/rp:/workspace
+      - rp_node_modules:/workspace/node_modules
+    networks:
+      - sesame_network
+
+  nginx:
+    image: nginx:1.22.1-alpine
+    container_name: "proxy"
+    volumes:
+      # using env variables in nginx config
+      - type: bind
+        source: "./nginx/nginx.conf"
+        target: "/etc/nginx/templates/default.conf.template"
+      - type: bind
+        source: "./nginx/cert"
+        target: "/cert"
+    networks:
+      - sesame_network
+    ports:
+      - "${EXTERNAL_PORT}:443"
+    env_file:
+      - .env
+    depends_on:
+      - idp
+      - rp
+
+networks:
+  sesame_network:
+    name: sesame-network
+    driver: bridge
