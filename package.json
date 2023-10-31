@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "fmt": "prettier -w .",
+    "cert": "cd ./proxy && ./mkcert.sh",
     "proxy": "sptth ./proxy/proxy.yaml"
   },
   "dependencies": {
