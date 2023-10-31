@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "docker-compose build && docker-compose up",
+    "build": "docker-compose build",
+    "clean": "docker-compose rm -f && docker volume prune -f && docker image prune -f && docker rmi -f $(docker images -q)",
     "fmt": "prettier -w .",
     "cert": "cd ./proxy && ./mkcert.sh"
   },
