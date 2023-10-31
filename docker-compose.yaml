@@ -12,7 +12,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./services/rp:/workspace
+      - ./services/idp:/workspace
       - idp_node_modules:/workspace/node_modules
     networks:
       - sesame_network

@@ -86,7 +86,7 @@ app.post("/verify", (req, res) => {
   }
 })
 
-const port = 6000
+const port = process.env.PORT || 6000
 const listener = app.listen(port, () => {
   console.log(`IDP server starts on port ${listener.address().port}`)
 })

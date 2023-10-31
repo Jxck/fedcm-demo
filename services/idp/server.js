@@ -166,7 +166,7 @@ app.get("/logout", (req, res) => {
   res.redirect("/")
 })
 
-const port = 5000
+const port = process.env.PORT || 5000
 const listener = app.listen(port, () => {
   console.log(`IDP server starts on port ${listener.address().port}`)
 })
