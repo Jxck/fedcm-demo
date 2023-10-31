@@ -8,12 +8,6 @@
     "fmt": "prettier -w .",
     "cert": "cd ./proxy && ./mkcert.sh"
   },
-  "dependencies": {
-    "express": "^4.18.2",
-    "express-session": "^1.17.3",
-    "hbs": "^4.2.0",
-    "jsonwebtoken": "^9.0.2"
-  },
   "devDependencies": {
     "prettier": "^3.0.3"
   },
